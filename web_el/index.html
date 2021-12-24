@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>word - 8963</title>
+    <!-- 引入样式 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <link rel="stylesheet" href="./css/home.css" />
+  </head>
+  <body>
+    <div id="app">
+      <el-tabs
+        class="tab_nav"
+        v-model="activeName"
+        @tab-click="handleClick"
+        stretch="false"
+      >
+        <el-tab-pane label="全部单词" name="1">
+          <div class="content">
+            <el-table
+              ref="multipleTable"
+              :data="wordData"
+              tooltip-effect="dark"
+              style="width: 100%"
+              :default-sort="{prop: 'word', order: 'ascending'}"
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column type="selection" width="55"> </el-table-column>
+              <el-table-column label="单词" prop="word" sortable>
+              </el-table-column>
+              <el-table-column label="中文" prop="mean"> </el-table-column>
+              <el-table-column label="词性" prop="type"> </el-table-column>
+              <!-- <el-table-column label="相似" prop="similar"> </el-table-column> -->
+              <el-table-column
+                label="标签"
+                prop="tag"
+                :filters="[{ text: '高中', value: '高中' }, { text: '四级', value: '四级' }]"
+                :filter-method="filterTag"
+                filter-placement="bottom-end"
+              >
+              </el-table-column>
+            </el-table>
+
+            <div
+              style="margin: 20px 0"
+              v-show="this.multipleSelection.length ? true : false"
+            >
+              <el-button @click="studyBtn()" type="primary" plain
+                >学习({{this.multipleSelection.length}})</el-button
+              >
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="学习单词" name="2">
+          <div class="content">
+            <el-empty
+              description="无"
+              v-show="this.wordList.length ? false:true"
+            ></el-empty>
+            <div class="main" v-show="this.wordList.length ? true : false">
+              <div style="margin: 10px 0">
+                <el-radio-group v-model="radio2" @change="selecHidden">
+                  <el-radio label="3" border>无隐藏</el-radio>
+                  <el-radio label="1" border>隐藏中文</el-radio>
+                  <el-radio label="2" border>隐藏单词</el-radio>
+                </el-radio-group>
+              </div>
+              <div style="margin: 10px 0">
+                <el-radio-group v-model="radio" @change="selecRadio">
+                  <el-radio label="1" border>正序</el-radio>
+                  <el-radio label="2" border>乱序</el-radio>
+                </el-radio-group>
+              </div>
+              <el-card class="wordCard">
+                <div class="item" v-for="(item,i) in wordList" :key="i">
+                  <span class="word" v-show="hiddenType == 'word' ? 0 : 1"
+                    >{{item.word}}</span
+                  >
+                  <span class="mean" v-show="hiddenType == 'mean' ? 0 : 1"
+                    >{{item.mean}}.{{item.type}}</span
+                  >
+                </div>
+              </el-card>
+              <div>
+                <el-button
+                  style="margin: 20px 0"
+                  type="primary"
+                  @click="testWM('mean')"
+                  plain
+                >
+                  测试中文
+                </el-button>
+                <el-button
+                  style="margin: 20px 0"
+                  type="primary"
+                  @click="testWM('word')"
+                  plain
+                >
+                  测试英文
+                </el-button>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="测试" name="3">
+          <el-empty
+            description="无"
+            v-show="this.testList.length ? false:true"
+          ></el-empty>
+          <div class="content" v-show="this.testList.length ? true:false">
+            <el-card class="testCart">
+              <div class="testItem">{{testItem.q}}</div>
+              <div class="remind" @click="remindBtn">提示</div>
+              <div class="answer" @click="answerBtn">答案</div>
+              <div>
+                <el-button type="info" plain class="nextBtn" @click="nextBtn">
+                  <i class="el-icon-right"></i>
+                </el-button>
+              </div>
+            </el-card>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./js/home.js"></script>
+  </body>
+</html>

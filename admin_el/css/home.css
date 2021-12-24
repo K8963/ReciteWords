@@ -1,0 +1,46 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+/* 登录弹窗 */
+.userDia .registBtn,
+.userDia .loginBtn {
+  width: 48%;
+  background-color: #f5f5f5;
+}
+.userDia .btnList {
+  margin-top: 40px;
+}
+/* 标签导航 */
+.el-tabs__nav-wrap {
+  padding: 10px 20px 15px 20px;
+  background-color: #545c64;
+}
+.el-tabs__active-bar {
+  background-color: #ffd04b;
+}
+.el-tabs__item.is-active {
+  color: #ffd04b;
+}
+.el-tabs__item {
+  color: #eee;
+  font-size: 16px;
+}
+.el-tabs__item:hover {
+  color: #ffd04b;
+}
+
+.content {
+  padding: 0 30px;
+}
+/* 添加单词表单 */
+.wordForm {
+  width: 60%;
+}
+.jsonCard {
+  margin-top: 30px;
+  width: 80%;
+}
+.jsonCard .info {
+  margin-top: 20px;
+}

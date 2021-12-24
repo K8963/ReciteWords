@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 引入样式 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+
+    <!-- home -->
+    <link rel="stylesheet" href="./css/home.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 登录弹窗 -->
+      <el-dialog
+        title="登录或注册"
+        :visible.sync="loginDiaV"
+        width="500px"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        :show-close="false"
+        custom-class="userDia"
+      >
+        <el-form
+          :model="userForm"
+          status-icon
+          ref="userForm"
+          label-width="100px"
+          label-position="top"
+          class="demo-userForm"
+        >
+          <el-form-item label="用户名">
+            <el-input v-model.number="userForm.user"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input type="password" v-model="userForm.pwd"></el-input>
+          </el-form-item>
+
+          <el-form-item class="btnList">
+            <el-button class="registBtn" @click="registerUser(userForm)">
+              注册
+            </el-button>
+            <el-button
+              class="loginBtn"
+              @keyup.enter="loginUser(userForm)"
+              @click="loginUser(userForm)"
+              >登录</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+
+      <div class="main">
+        <el-tabs
+          class="tab_nav"
+          v-model="activeName"
+          @tab-click="handleClick"
+          stretch="false"
+        >
+          <el-tab-pane label="单词管理" name="1">
+            <div class="content">
+              <el-table
+                :data="wordData.filter(data => !search || data.word.includes(search))"
+                style="width: 100%"
+              >
+                <el-table-column label="单词" prop="word"> </el-table-column>
+                <el-table-column label="中文" prop="mean"> </el-table-column>
+                <el-table-column label="词性" prop="type"> </el-table-column>
+                <el-table-column label="相似" prop="similar"> </el-table-column>
+                <el-table-column label="标签" prop="tag"> </el-table-column>
+                <el-table-column align="right">
+                  <template slot="header" slot-scope="scope">
+                    <el-input
+                      v-model="search"
+                      size="mini"
+                      placeholder="输入单词搜索"
+                    />
+                  </template>
+                  <template slot-scope="scope">
+                    <el-button
+                      size="mini"
+                      @click="handleEdit(scope.$index, scope.row)"
+                      >编辑</el-button
+                    >
+                    <el-button
+                      size="mini"
+                      type="danger"
+                      @click="handleDelete(scope.$index, scope.row)"
+                      >删除</el-button
+                    >
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="添加单词" name="2">
+            <div class="content">
+              <el-form
+                :model="wordForm"
+                ref="wordForm"
+                label-width="80px"
+                class="wordForm"
+                label-position="left"
+              >
+                <el-form-item label="单词">
+                  <el-input v-model="wordForm.word"></el-input>
+                </el-form-item>
+                <el-form-item label="中文">
+                  <el-input v-model="wordForm.mean"></el-input>
+                </el-form-item>
+                <el-form-item label="词性">
+                  <el-input v-model="wordForm.type"></el-input>
+                </el-form-item>
+                <el-form-item label="相似">
+                  <el-input v-model="wordForm.similar"></el-input>
+                </el-form-item>
+                <el-form-item label="标签">
+                  <el-input v-model="wordForm.tag"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="addWord(wordForm)"
+                    >添加</el-button
+                  >
+                  <el-button @click="resetWordForm()">重置</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="导出JSON" name="3">
+            <div class="content">
+              <el-card class="jsonCard" shadow="always">
+                <el-button @click="getJson">导出JSON</el-button>
+                <div class="info">JSON 文件路径：{{jsonPath}}</div>
+              </el-card>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./js/home.js"></script>
+  </body>
+</html>
