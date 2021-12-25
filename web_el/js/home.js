@@ -25,12 +25,15 @@ new Vue({
   },
   methods: {
     getWord() {
-      fetch("/data/word.json")
+      let host = window.location.href;
+      result=host.match(/.+(?=\/index)/);
+      fetch(result[0]+"/data/word.json")
         .then((res) => {
           return res.json();
         })
         .then((res) => {
           this.wordData = res.result;
+          console.log(res);
         });
     },
     // 导航标签切换
